@@ -33,23 +33,23 @@ public class RequestManager {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if(!response.isSuccessful()){
-                        Toast.makeText(context, "Error :(", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Failure in response", Toast.LENGTH_SHORT).show();
                     }
                     listener.onFetchData(response.body().getArticles(), response.message());
                 }
 
                 @Override
                 public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    listener.onError("Error :(");
+                    listener.onError("Request Failure");
                 }
             });
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
     public interface CallNewsApi{
-        @GET("articles")
+        @GET("top-headlines")
         Call<ApiResponse> callArticles(
                 @Query("country") String country,
                 @Query("category") String category,

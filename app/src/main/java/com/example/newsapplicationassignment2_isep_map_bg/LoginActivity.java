@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     //Go to main activity when logged in
     private void MainActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NewsActivity.class);
         startActivity(intent);
     }
 }
