@@ -1,6 +1,7 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;
 import com.example.newsapplicationassignment2_isep_map_bg.Models.Articles;
@@ -28,6 +30,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     Button bScience;
     Button bSports;
     Button bTechnology;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,23 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         bTechnology = findViewById(R.id.btnTechnology);
         bTechnology.setOnClickListener(this);
 
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                dialog.setTitle("Searching for News of " + query);
+                dialog.show();
+                RequestManager manager = new RequestManager(NewsActivity.this);
+                manager.getArticles(listener, "general", query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
     }
@@ -60,13 +80,18 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     private final OnFetchDataListener<ApiResponse> listener = new OnFetchDataListener<ApiResponse>() {
         @Override
         public void onFetchData(List<Articles> ls, String message) {
-            showNews(ls);
-            dialog.dismiss();
+            if(ls.isEmpty()){
+                Toast.makeText(NewsActivity.this, "No results ", Toast.LENGTH_SHORT).show();
+            }else{
+                showNews(ls);
+                dialog.dismiss();
+            }
+
         }
 
         @Override
         public void onError(String message) {
-
+            Toast.makeText(NewsActivity.this, "Error occurred :(", Toast.LENGTH_SHORT).show();
         }
     };
 
