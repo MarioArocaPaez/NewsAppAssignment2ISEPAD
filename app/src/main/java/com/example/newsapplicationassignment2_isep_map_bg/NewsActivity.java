@@ -48,8 +48,10 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         bHealth.setOnClickListener(this);
         bScience = findViewById(R.id.btnScience);
         bScience.setOnClickListener(this);
-        bSports = findViewById(R.id.btnTechnology);
+        bSports = findViewById(R.id.btnSports);
         bSports.setOnClickListener(this);
+        bTechnology = findViewById(R.id.btnTechnology);
+        bTechnology.setOnClickListener(this);
 
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
@@ -88,6 +90,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         Button button = (Button) view;
         String category = button.getText().toString();
         dialog.setTitle("Searching news of " + category);
+        dialog.show();
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, category, null);
     }
