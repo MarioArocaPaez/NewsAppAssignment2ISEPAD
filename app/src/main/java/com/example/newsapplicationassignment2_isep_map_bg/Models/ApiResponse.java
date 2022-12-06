@@ -1,8 +1,9 @@
 package com.example.newsapplicationassignment2_isep_map_bg.Models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ApiResponse {
+public class ApiResponse implements Serializable {
 
     String status;
     int totalResults;

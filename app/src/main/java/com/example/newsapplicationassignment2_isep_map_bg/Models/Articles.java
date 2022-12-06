@@ -1,6 +1,8 @@
 package com.example.newsapplicationassignment2_isep_map_bg.Models;
 
-public class Articles {
+import java.io.Serializable;
+
+public class Articles implements Serializable {
 
     Source source;
     String author;
