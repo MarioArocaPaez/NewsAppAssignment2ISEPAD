@@ -7,6 +7,86 @@
     android:orientation="vertical"
     tools:context=".NewsActivity">
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnBusiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="business"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnEntertainment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="entertainment"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="general"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnHealth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="health"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnScience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="science"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sports"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+            <Button
+                android:id="@+id/btnTechnology"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="technology"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:layout_margin="6dp">
+
+            </Button>
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMain"
         android:layout_width="match_parent"

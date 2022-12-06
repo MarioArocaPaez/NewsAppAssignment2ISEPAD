@@ -38,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
         time.setText(article.getPublishedAt());
         detail.setText(article.getDescription());
         content.setText(article.getContent());
-        Picasso.get().load(article.getUrl()).into(ImgNews);
+        Picasso.get().load(article.getUrlToImage()).into(ImgNews);
 
     }
 }
