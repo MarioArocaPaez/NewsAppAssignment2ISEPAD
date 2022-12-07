@@ -40,5 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
         content.setText(article.getContent());
         Picasso.get().load(article.getUrlToImage()).into(ImgNews);
 
+        //TODO: feature ver mas
+
     }
 }
