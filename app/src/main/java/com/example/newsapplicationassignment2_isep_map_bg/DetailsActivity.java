@@ -2,7 +2,11 @@ package com.example.newsapplicationassignment2_isep_map_bg;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView detail;
     TextView content;
     ImageView ImgNews;
+    Button bDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
         detail = findViewById(R.id.textDetail);
         content = findViewById(R.id.textContent);
         ImgNews = findViewById(R.id.imageDetail);
+        bDetails = findViewById(R.id.seeTextDetails);
 
         article = (Articles) getIntent().getSerializableExtra("data");
 
@@ -39,6 +45,14 @@ public class DetailsActivity extends AppCompatActivity {
         detail.setText(article.getDescription());
         content.setText(article.getContent());
         Picasso.get().load(article.getUrlToImage()).into(ImgNews);
+
+        bDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent webPage = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl()));
+                startActivity(webPage);
+            }
+        });
 
         //TODO: feature ver mas
 

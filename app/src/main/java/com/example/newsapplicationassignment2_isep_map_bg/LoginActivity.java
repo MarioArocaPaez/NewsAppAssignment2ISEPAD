@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 task.getResult(ApiException.class);
                 MainActivity();
             } catch (ApiException e){
-                Toast.makeText(this, "Error :(", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error trying to log in", Toast.LENGTH_SHORT).show();
             }
         }
     }
