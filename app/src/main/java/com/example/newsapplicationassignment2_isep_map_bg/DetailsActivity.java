@@ -26,6 +26,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView content;
     ImageView ImgNews;
     Button bDetails;
+    Button bShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,18 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: feature ver mas
+        bShare = findViewById(R.id.shareBut);
+        bShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = article.getUrl();
+                intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(intent,"Share using"));
+
+            }
+        });
 
     }
 
@@ -75,4 +87,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

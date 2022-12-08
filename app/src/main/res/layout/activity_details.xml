@@ -66,6 +66,13 @@
                         android:textSize="16sp">
 
                     </TextView>
+                    <Button
+                        android:id="@+id/shareBut"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Share it">
+
+                    </Button>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <TextView
