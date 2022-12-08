@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f7f1e3"
     tools:context=".DetailsActivity">
 
     <ScrollView
@@ -25,11 +26,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="#d1ccc0"
                 app:cardElevation="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="#DCDCDC"
                     android:layout_margin="6dp">
                     <TextView
                         android:id="@+id/textTitle"
@@ -43,7 +46,7 @@
                     <ImageView
                         android:id="@+id/imageDetail"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="200dp"
                         android:src="@drawable/notfound"
                         android:layout_marginTop="8dp">
 

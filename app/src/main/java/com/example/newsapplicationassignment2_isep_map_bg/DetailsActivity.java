@@ -50,8 +50,13 @@ public class DetailsActivity extends AppCompatActivity {
         article = (Articles) getIntent().getSerializableExtra("data");
 
         title.setText(article.getTitle());
-        author.setText(article.getAuthor());
-        time.setText(article.getPublishedAt());
+        if(article.getAuthor() != "" | article.getAuthor() != null){
+            author.setText(article.getAuthor());
+        }else {
+            author.setText("No author specified");
+        }
+
+        time.setText(article.getPublishedAt().substring(0,10) + " " + article.getPublishedAt().substring(11,16));
         detail.setText(article.getDescription());
         content.setText(article.getContent());
         Picasso.get().load(article.getUrlToImage()).into(ImgNews);

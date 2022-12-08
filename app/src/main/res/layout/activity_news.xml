@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f7f1e3"
     tools:context=".NewsActivity">
 
     <HorizontalScrollView
@@ -90,13 +91,14 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="14dp"
+        android:layout_margin="12dp"
         app:cardElevation="8dp">
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             app:defaultQueryHint="Search for News..."
             app:iconifiedByDefault="false"
             android:layout_width="match_parent"
+            android:background="#aaa69d"
             android:layout_height="?attr/actionBarSize">
 
         </androidx.appcompat.widget.SearchView>
@@ -105,6 +107,7 @@
         android:id="@+id/recyclerViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#f7f1e3"
         android:layout_margin="10dp"/>
 
 </LinearLayout>
