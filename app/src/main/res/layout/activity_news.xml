@@ -22,7 +22,9 @@
                 android:text="business"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
             <Button
@@ -32,7 +34,9 @@
                 android:text="entertainment"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                app:cornerRadius="15dp"
+                android:backgroundTint="#cd6133">
 
             </Button>
             <Button
@@ -42,7 +46,9 @@
                 android:text="general"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
             <Button
@@ -52,7 +58,9 @@
                 android:text="health"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
             <Button
@@ -62,7 +70,9 @@
                 android:text="science"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
             <Button
@@ -72,7 +82,9 @@
                 android:text="sports"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
             <Button
@@ -82,7 +94,9 @@
                 android:text="technology"
                 android:textSize="12sp"
                 android:padding="6dp"
-                android:layout_margin="6dp">
+                android:layout_margin="6dp"
+                android:backgroundTint="#cd6133"
+                app:cornerRadius="15dp">
 
             </Button>
         </LinearLayout>
@@ -93,13 +107,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         app:cardElevation="8dp">
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            app:defaultQueryHint="Search for News..."
-            app:iconifiedByDefault="false"
             android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:background="#aaa69d"
-            android:layout_height="?attr/actionBarSize">
+            app:defaultQueryHint="Search for News..."
+            app:iconifiedByDefault="false">
 
         </androidx.appcompat.widget.SearchView>
     </androidx.cardview.widget.CardView>
