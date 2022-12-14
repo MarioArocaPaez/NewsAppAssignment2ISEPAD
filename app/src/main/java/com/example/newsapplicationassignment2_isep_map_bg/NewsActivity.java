@@ -1,13 +1,18 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;
 import com.example.newsapplicationassignment2_isep_map_bg.Models.Articles;
 import com.google.android.gms.common.api.Api;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
@@ -31,6 +37,17 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     Button bSports;
     Button bTechnology;
     SearchView searchView;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle AbToggle;
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(AbToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +92,42 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
 
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.sidebar);
+        AbToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(AbToggle);
+        AbToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_profile:
+                    {
+                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case R.id.nav_country:
+                    {
+                        Toast.makeText(NewsActivity.this, "Country pressed", Toast.LENGTH_SHORT).show();
+                        navigationView.bringToFront();
+                        break;
+                    }
+                }
+                return NewsActivity.super.onOptionsItemSelected(item);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
+        }
     }
 
     private final OnFetchDataListener<ApiResponse> listener = new OnFetchDataListener<ApiResponse>() {
