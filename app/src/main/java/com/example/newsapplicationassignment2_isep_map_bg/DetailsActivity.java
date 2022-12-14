@@ -50,7 +50,8 @@ public class DetailsActivity extends AppCompatActivity {
         article = (Articles) getIntent().getSerializableExtra("data");
 
         title.setText(article.getTitle());
-        if(article.getAuthor() != "" | article.getAuthor() != null){
+        String aux = article.getAuthor();
+        if(aux != null){
             author.setText(article.getAuthor());
         }else {
             author.setText("No author specified");

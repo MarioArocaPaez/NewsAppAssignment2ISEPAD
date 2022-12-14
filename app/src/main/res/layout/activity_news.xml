@@ -9,14 +9,6 @@
     android:background="#f7f1e3"
     tools:context=".NewsActivity">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/sidebar"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu"
-        android:layout_gravity="start"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -139,6 +131,14 @@
             android:background="#f7f1e3"
             android:layout_margin="10dp"/>
     </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/sidebar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu"
+        android:layout_gravity="start"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

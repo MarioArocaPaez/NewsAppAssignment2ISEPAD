@@ -11,17 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;
 import com.example.newsapplicationassignment2_isep_map_bg.Models.Articles;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.Api;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -40,6 +46,9 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle AbToggle;
+    ImageView profilePicture;
+    TextView googName;
+    TextView gMail;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -105,20 +114,37 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                 switch (item.getItemId()){
                     case R.id.nav_profile:
                     {
-                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(NewsActivity.this, "Profile pressed", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     case R.id.nav_country:
                     {
                         Toast.makeText(NewsActivity.this, "Country pressed", Toast.LENGTH_SHORT).show();
-                        navigationView.bringToFront();
                         break;
                     }
                 }
                 return NewsActivity.super.onOptionsItemSelected(item);
             }
         });
+
+        profilePicture = navigationView.getHeaderView(0).findViewById(R.id.profile_picture);
+        googName = navigationView.getHeaderView(0).findViewById(R.id.google_name);
+        gMail = navigationView.getHeaderView(0).findViewById(R.id.google_gmail);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if(account != null){
+            Uri googlePicture = account.getPhotoUrl();
+            String Name = account.getDisplayName();
+            String Mail = account.getEmail();
+
+            Picasso.get().load(googlePicture).into(profilePicture);
+            googName.setText(Name);
+            gMail.setText(Mail);
+        }
+
+
+
     }
 
     @Override
