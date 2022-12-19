@@ -114,7 +114,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                 switch (item.getItemId()){
                     case R.id.nav_profile:
                     {
-                        Toast.makeText(NewsActivity.this, "Profile pressed", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         break;
                     }
                     case R.id.nav_country:
