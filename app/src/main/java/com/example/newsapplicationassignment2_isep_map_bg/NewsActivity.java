@@ -119,7 +119,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                     }
                     case R.id.nav_country:
                     {
-                        Toast.makeText(NewsActivity.this, "Country pressed", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), CountryActivity.class));
                         break;
                     }
                 }
