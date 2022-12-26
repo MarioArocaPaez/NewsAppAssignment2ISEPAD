@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 
 public class RequestManager {
     Context context;
+    public static String countryLabel;
 
     Retrofit retrofit = new Retrofit.Builder().baseUrl("https://newsapi.org/v2/")
             .addConverterFactory(GsonConverterFactory.create())
