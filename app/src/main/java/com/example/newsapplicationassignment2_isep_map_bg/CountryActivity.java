@@ -42,13 +42,18 @@ public class CountryActivity extends AppCompatActivity {
                 "hk","hu","id","ie","il","in","it","jp","kr","lt","lv","ma","mx","my","ng","nl","no","nz","ph","pl","pt","ro","rs","ru","sa",
                 "se","sg","si","sk","th","tr","tw","ua","us","ve","za"});
 
+        int countryFlags [] = {R.drawable.all, R.drawable.united_arab_emirates, R.drawable.argentina, R.drawable.austria, R.drawable.australia, R.drawable.belgium, R.drawable.bulgaria,
+                R.drawable.brazil, R.drawable.canada, R.drawable.switzerland, R.drawable.china, R.drawable.colombia, R.drawable.cuba,
+                R.drawable.czechia, R.drawable.germany, R.drawable.egypt, R.drawable.france, R.drawable.uk, R.drawable.greece, R.drawable.hong_kong};
+
         textView = findViewById(R.id.textView);
         listView = findViewById(R.id.listView);
         currentCountry = findViewById(R.id.currentCountry);
 
         currentCountry.setText(RequestManager.countryLabel);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_countries, countries);
-        listView.setAdapter(adapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_countries, countries);
+        CustomBaseAdapter countryAdapter = new CustomBaseAdapter(getApplicationContext(), countries, countryFlags);
+        listView.setAdapter(countryAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
