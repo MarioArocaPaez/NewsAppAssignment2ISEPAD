@@ -44,11 +44,7 @@ public class CustomBaseAdapter extends BaseAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.countryName);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.countryFlag);
         textView.setText(countries.get(position));
-        if (position <= 19){
-            imageView.setImageResource(countryFlags[position]);
-        } else{
-            imageView.setImageResource(R.drawable.all);
-        }
+        imageView.setImageResource(countryFlags[position]);
 
         return convertView;
     }

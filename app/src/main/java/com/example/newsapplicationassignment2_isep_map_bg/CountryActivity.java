@@ -44,7 +44,13 @@ public class CountryActivity extends AppCompatActivity {
 
         int countryFlags [] = {R.drawable.all, R.drawable.united_arab_emirates, R.drawable.argentina, R.drawable.austria, R.drawable.australia, R.drawable.belgium, R.drawable.bulgaria,
                 R.drawable.brazil, R.drawable.canada, R.drawable.switzerland, R.drawable.china, R.drawable.colombia, R.drawable.cuba,
-                R.drawable.czechia, R.drawable.germany, R.drawable.egypt, R.drawable.france, R.drawable.uk, R.drawable.greece, R.drawable.hong_kong};
+                R.drawable.czechia, R.drawable.germany, R.drawable.egypt, R.drawable.france, R.drawable.uk, R.drawable.greece, R.drawable.hong_kong,
+                R.drawable.hungary, R.drawable.indonesia, R.drawable.ireland, R.drawable.israel, R.drawable.india, R.drawable.italy, R.drawable.japan,
+                R.drawable.korea, R.drawable.lithuania, R.drawable.latvia, R.drawable.morocco, R.drawable.mexico, R.drawable.malasya,
+                R.drawable.nigeria, R.drawable.netherlands, R.drawable.norway, R.drawable.new_zealand, R.drawable.philipines, R.drawable.poland,
+                R.drawable.portugal, R.drawable.romania, R.drawable.serbia, R.drawable.russia, R.drawable.saudi_arabia, R.drawable.sweden,
+                R.drawable.singapore, R.drawable.slovenia, R.drawable.slovakia, R.drawable.thailand, R.drawable.turkey, R.drawable.taiwan,
+                R.drawable.ukraine, R.drawable.usa, R.drawable.venezuela, R.drawable.south_africa};
 
         textView = findViewById(R.id.textView);
         listView = findViewById(R.id.listView);
