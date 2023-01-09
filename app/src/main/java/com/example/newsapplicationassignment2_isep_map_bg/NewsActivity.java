@@ -27,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.Api;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,6 +52,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     TextView googName;
     TextView gMail;
 
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(AbToggle.onOptionsItemSelected(item)){
@@ -66,6 +70,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         dialog = new ProgressDialog(this);
         dialog.setTitle("Searching for news articles...");
         dialog.show();
+
+
 
         bBusiness = findViewById(R.id.btnBusiness);
         bBusiness.setOnClickListener(this);
@@ -118,6 +124,11 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                         break;
                     }
                     case R.id.nav_country:
+                    {
+                        startActivity(new Intent(getApplicationContext(), CountryActivity.class));
+                        break;
+                    }
+                    case R.id.nav_saved:
                     {
                         startActivity(new Intent(getApplicationContext(), CountryActivity.class));
                         break;
@@ -175,10 +186,11 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     };
 
     private void showNews(List<Articles> ls) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        adapter = new CustomAdapter(this, ls, this);
+        adapter = new CustomAdapter(this, ls, this, account);
         recyclerView.setAdapter(adapter);
     }
 
