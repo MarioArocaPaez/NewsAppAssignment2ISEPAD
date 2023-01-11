@@ -9,41 +9,42 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/news" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:gravity="center"
-        android:text="News App"
+        android:text="Please log in to continue"
         android:textColor="#000"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="25dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:text="Log in to continue"
-        android:textColor="#000"
-        android:textSize="20dp" />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/google_logo"/>
 
     <Button
         android:id="@+id/logInBut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="#66FF00"
+        android:layout_margin="30dp"
+        android:background="#34ace0"
         android:drawablePadding="10dp"
         android:text="Log in with Google"
         android:textColor="#ffffffff"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold">
+    </Button>
+
+
 
 </LinearLayout>
