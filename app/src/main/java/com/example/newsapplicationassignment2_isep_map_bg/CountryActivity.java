@@ -57,7 +57,6 @@ public class CountryActivity extends AppCompatActivity {
         currentCountry = findViewById(R.id.currentCountry);
 
         currentCountry.setText(RequestManager.countryLabel);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item_countries, countries);
         CustomBaseAdapter countryAdapter = new CustomBaseAdapter(getApplicationContext(), countries, countryFlags);
         listView.setAdapter(countryAdapter);
 

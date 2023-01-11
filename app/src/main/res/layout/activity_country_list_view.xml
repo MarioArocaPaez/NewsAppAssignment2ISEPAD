@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     app:cardElevation="8dp"
     app:cardCornerRadius="10dp"
-    android:backgroundTint="#aaa69d"
+    android:backgroundTint="#d1ccc0"
     android:layout_margin="8dp">
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:background="#aaa69d"
+        android:background="#d1ccc0"
         android:weightSum="3">
 
         <LinearLayout
