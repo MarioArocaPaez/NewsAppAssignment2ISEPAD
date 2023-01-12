@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1025519137775",
+    "firebase_url": "https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "newsapp-808c0",
     "storage_bucket": "newsapp-808c0.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.newsapplicationassignment2_isep_map_bg",
             "certificate_hash": "7e627f400dab4a03bf9b5a186ed76e889fc91052"
+          }
+        },
+        {
+          "client_id": "1025519137775-8598n88sfgi2m8e18t2d523gg94v1caa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newsapplicationassignment2_isep_map_bg",
+            "certificate_hash": "281465bd9d89c440958a1f71e3f6c8a298e60408"
           }
         },
         {

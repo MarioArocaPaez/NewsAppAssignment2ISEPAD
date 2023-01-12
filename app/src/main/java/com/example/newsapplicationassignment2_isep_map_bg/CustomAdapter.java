@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
+
+
 
         return new CustomViewHolder(LayoutInflater.from(context).inflate(R.layout.headline_list_items,
                 parent,
@@ -61,7 +65,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                 if(snapshot.getValue()!=null){
                     holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
                     holder.saveButton.setTag("saved");
-                };
+                }
             }
 
             @Override
@@ -82,30 +86,33 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         });
 
 
-
         holder.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String tag = (String)holder.saveButton.getTag();
-                if(tag == "unsaved") {
-                    holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
-                    holder.saveButton.setTag("saved");
-                    addDatatoFirebase(articles.get(position));
-                } else {
+                if(tag == "saved") {
+
                     holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_border_24);
                     holder.saveButton.setTag("unsaved");
-                    deleteDataFromFirebase(articles.get(position));
+                    databaseReference.child(articles.get(position).getPublishedAt()).removeValue();
+                    Toast.makeText(context, "Saved article deleted!", Toast.LENGTH_LONG).show();
+                    //deleteDataFromFirebase(articles.get(position));
+                } else {
+                    holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+                    holder.saveButton.setTag("saved");
+                    databaseReference.child(articles.get(position).getPublishedAt()).setValue(articles.get(position));
+                    Toast.makeText(context, "Article saved!", Toast.LENGTH_LONG).show();
+                    //addDatatoFirebase(articles.get(position));
                 }
             }
 
             private void deleteDataFromFirebase(Articles article) {
                 // below lines are used to get reference for our database.
-                databaseReference = firebaseDatabase.getReference(account.getId()).child("saved").child(article.getPublishedAt());
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        snapshot.getRef().removeValue();
+                        snapshot.getRef().child(article.getPublishedAt()).removeValue();
                     }
 
                     @Override
@@ -118,12 +125,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             private void addDatatoFirebase(Articles article) {
 
                 // below lines are used to get reference for our database.
-                databaseReference = firebaseDatabase.getReference(account.getId()).child("saved").child(article.getPublishedAt());
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        databaseReference.setValue(article);
+                        snapshot.getRef().child(article.getPublishedAt()).setValue(article);
                     }
 
                     @Override

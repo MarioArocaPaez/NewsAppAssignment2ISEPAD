@@ -184,8 +184,6 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     public List<Articles> getSavedData(DatabaseReference databaseReference) {
         List<Articles> ls = new ArrayList<Articles>();
 
-        //databaseReference.addValueEventListener(new ValueEventListener() {
-
         ValueEventListener leListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -197,6 +195,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                         Log.i("TOTO", messageSnapshot.getKey() + " " + messageSnapshot.getValue());
                         Gson gson = new Gson();
                         String json = gson.toJson(messageSnapshot.getValue());
+
+                        Log.d("Contenido del json: ", json);
 
                         Gson g = new Gson();
                         Articles article = g.fromJson(json, Articles.class);

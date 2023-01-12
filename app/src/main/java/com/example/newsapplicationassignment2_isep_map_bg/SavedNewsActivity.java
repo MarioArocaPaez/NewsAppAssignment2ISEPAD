@@ -120,7 +120,7 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
 
     private void showNews(List<Articles> ls) {
         if(ls.isEmpty()){
-            Toast.makeText(SavedNewsActivity.this, "No results yet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SavedNewsActivity.this, "No saved articles yet", Toast.LENGTH_SHORT).show();
         }else {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             recyclerView = findViewById(R.id.recyclerViewMain);
