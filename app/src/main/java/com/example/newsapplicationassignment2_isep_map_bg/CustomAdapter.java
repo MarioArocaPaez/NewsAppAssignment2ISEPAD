@@ -28,12 +28,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private SelectListener listener;
     private GoogleSignInAccount account;
 
-    // creating a variable for our
-    // Firebase Database.
     FirebaseDatabase firebaseDatabase;
-
-    // creating a variable for our Database
-    // Reference for Firebase.
     DatabaseReference databaseReference;
 
     public CustomAdapter(Context context, List<Articles> articles, SelectListener listener, GoogleSignInAccount account) {
@@ -56,9 +51,24 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+
         holder.textTitle.setText(articles.get(position).getTitle());
         holder.textSource.setText(articles.get(position).getSource().getName());
 
+        firebaseDatabase.getReference(account.getId()).child("saved").child(articles.get(position).getPublishedAt()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue()!=null){
+                    holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+                    holder.saveButton.setTag("saved");
+                };
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         if(articles.get(position).getUrlToImage() != null){
             Picasso.get().load(articles.get(position).getUrlToImage()).into(holder.img);
@@ -90,7 +100,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
             private void deleteDataFromFirebase(Articles article) {
                 // below lines are used to get reference for our database.
-                databaseReference = firebaseDatabase.getReference(account.getId()).child(article.getPublishedAt());
+                databaseReference = firebaseDatabase.getReference(account.getId()).child("saved").child(article.getPublishedAt());
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -108,14 +118,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             private void addDatatoFirebase(Articles article) {
 
                 // below lines are used to get reference for our database.
-                databaseReference = firebaseDatabase.getReference(account.getId()).child(article.getPublishedAt());
+                databaseReference = firebaseDatabase.getReference(account.getId()).child("saved").child(article.getPublishedAt());
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // inside the method of on Data change we are setting
-                        // our object class to our database reference.
-                        // data base reference will sends data to firebase.
                         databaseReference.setValue(article);
                     }
 

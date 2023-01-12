@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +28,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.Api;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements SelectListener, View.OnClickListener{
@@ -52,6 +59,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     TextView googName;
     TextView gMail;
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
 
     @Override
@@ -71,7 +80,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         dialog.setTitle("Searching for news articles...");
         dialog.show();
 
-
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         bBusiness = findViewById(R.id.btnBusiness);
         bBusiness.setOnClickListener(this);
@@ -108,6 +117,10 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
 
+        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
+        List<Articles> ls = getSavedData(databaseReference);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.sidebar);
         AbToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -117,6 +130,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
                 switch (item.getItemId()){
                     case R.id.nav_profile:
                     {
@@ -130,7 +145,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                     }
                     case R.id.nav_saved:
                     {
-                        startActivity(new Intent(getApplicationContext(), CountryActivity.class));
+                        startActivity(new Intent(getApplicationContext(), SavedNewsActivity.class).putExtra("LIST", (Serializable) ls));
                         break;
                     }
                 }
@@ -142,7 +157,6 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         googName = navigationView.getHeaderView(0).findViewById(R.id.google_name);
         gMail = navigationView.getHeaderView(0).findViewById(R.id.google_gmail);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account != null){
             Uri googlePicture = account.getPhotoUrl();
@@ -157,6 +171,43 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
 
 
     }
+
+    public List<Articles> getSavedData(DatabaseReference databaseReference) {
+        List<Articles> ls = new ArrayList<Articles>();
+
+        //databaseReference.addValueEventListener(new ValueEventListener() {
+
+        ValueEventListener leListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    //Toast.makeText(getApplicationContext(),"Data Not Available",Toast.LENGTH_LONG).show();
+                    Log.d("dataSnapshot", "Null");
+                } else {
+                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                        Log.i("TOTO", messageSnapshot.getKey() + " " + messageSnapshot.getValue());
+                        Gson gson = new Gson();
+                        String json = gson.toJson(messageSnapshot.getValue());
+
+                        Gson g = new Gson();
+                        Articles article = g.fromJson(json, Articles.class);
+
+                        ls.add(article);
+                        Log.d("LS dice:", " aa " + ls.size());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(leListener);
+        Log.d("LS dice:", " bb " + ls.size());
+        return ls;
+
+    }
+
 
     @Override
     public void onBackPressed() {
