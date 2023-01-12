@@ -4,20 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
     TextView name,mail;
     Button logout;
+    ImageView profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +31,17 @@ public class ProfileActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
+        profilePic = findViewById(R.id.imageView);
         logout = findViewById(R.id.logOutBut);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account != null){
+            Uri googlePicture = account.getPhotoUrl();
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
 
+            Picasso.get().load(googlePicture).into(profilePic);
             name.setText(Name);
             mail.setText(Mail);
         }

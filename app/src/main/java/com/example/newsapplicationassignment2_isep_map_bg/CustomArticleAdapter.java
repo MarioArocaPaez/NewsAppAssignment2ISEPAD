@@ -13,12 +13,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
+public class CustomArticleAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private Context context;
     private List<Articles> articles;
     private SelectListener listener;
 
-    public CustomAdapter(Context context, List<Articles> articles, SelectListener listener) {
+    public CustomArticleAdapter(Context context, List<Articles> articles, SelectListener listener) {
         this.context = context;
         this.articles = articles;
         this.listener = listener;

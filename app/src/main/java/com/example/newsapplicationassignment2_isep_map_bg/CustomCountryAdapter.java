@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomBaseAdapter extends BaseAdapter {
+public class CustomCountryAdapter extends BaseAdapter {
 
     Context context;
     List<String> countries;
     int countryFlags[];
     LayoutInflater inflater;
 
-    public CustomBaseAdapter(Context ctx, List<String> countries, int[] countryFlags){
+    public CustomCountryAdapter(Context ctx, List<String> countries, int[] countryFlags){
         this.context = ctx;
         this.countries = countries;
         this.countryFlags = countryFlags;

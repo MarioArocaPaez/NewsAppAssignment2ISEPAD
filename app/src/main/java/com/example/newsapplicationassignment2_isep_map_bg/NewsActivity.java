@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;
 import com.example.newsapplicationassignment2_isep_map_bg.Models.Articles;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.Api;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +31,7 @@ import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements SelectListener, View.OnClickListener{
     RecyclerView recyclerView;
-    CustomAdapter adapter;
+    CustomArticleAdapter adapter;
     ProgressDialog dialog;
     Button bBusiness;
     Button bEntertainment;
@@ -62,7 +60,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        //TODO: Add something better than ProgressDialog
+
         dialog = new ProgressDialog(this);
         dialog.setTitle("Searching for news articles...");
         dialog.show();
@@ -178,7 +176,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        adapter = new CustomAdapter(this, ls, this);
+        adapter = new CustomArticleAdapter(this, ls, this);
         recyclerView.setAdapter(adapter);
     }
 

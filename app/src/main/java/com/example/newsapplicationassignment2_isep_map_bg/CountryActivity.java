@@ -6,17 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class CountryActivity extends AppCompatActivity {
 
@@ -54,16 +48,19 @@ public class CountryActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         listView = findViewById(R.id.listView);
-        currentCountry = findViewById(R.id.currentCountry);
 
+        currentCountry = findViewById(R.id.currentCountry);
+        //currentCountry is the text we see in the screen with the current country, not to miss with countryLabel
         currentCountry.setText(RequestManager.countryLabel);
-        CustomBaseAdapter countryAdapter = new CustomBaseAdapter(getApplicationContext(), countries, countryFlags);
+        CustomCountryAdapter countryAdapter = new CustomCountryAdapter(getApplicationContext(), countries, countryFlags);
         listView.setAdapter(countryAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //country is the code that will be used the API call
                 country = codes.get(position);
+                //countryLabel will be the text in currentCountry next time we enter this activity
                 RequestManager.countryLabel = countries.get(position);
                 startActivity(new Intent(getApplicationContext(), NewsActivity.class));
             }

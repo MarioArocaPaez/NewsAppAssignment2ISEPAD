@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 public class LoginActivity extends AppCompatActivity {
 
     Button logInBut;
+    Button exitBut;
     GoogleSignInOptions gso;
     public static GoogleSignInClient gsc;
 
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         logInBut = findViewById(R.id.logInBut);
+        exitBut = findViewById(R.id.exitBut);
         //Sign in will be regular with email
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -40,6 +42,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LogIn();
+            }
+        });
+
+        exitBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -65,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     //Go to main activity when logged in
+    //Main Activity is News Activity
     private void MainActivity() {
         Intent intent = new Intent(getApplicationContext(), NewsActivity.class);
         startActivity(intent);
