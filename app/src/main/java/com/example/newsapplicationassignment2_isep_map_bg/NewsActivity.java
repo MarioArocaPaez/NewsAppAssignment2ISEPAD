@@ -75,7 +75,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        //TODO: Add something better than ProgressDialog
+
+        // Dialog while news articles are loading
         dialog = new ProgressDialog(this);
         dialog.setTitle("Searching for news articles...");
         dialog.show();
@@ -114,9 +115,12 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
             }
         });
 
+        // Retrieving all the news from the API to show on the general feed
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
 
+        // Setting the reference for the FireBase realtime database, and retrieving the saved
+        // articles, to later on display them on the SavedNewsActivity.
         firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
         List<Articles> ls = getSavedData(databaseReference);
@@ -127,12 +131,17 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         drawerLayout.addDrawerListener(AbToggle);
         AbToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Setting the behavior for the selection different items of the sidebar
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
                 switch (item.getItemId()){
+                    case R.id.nav_news:
+                    {
+                        startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                        break;
+                    }
                     case R.id.nav_profile:
                     {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
@@ -207,7 +216,6 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         return ls;
 
     }
-
 
     @Override
     public void onBackPressed() {
