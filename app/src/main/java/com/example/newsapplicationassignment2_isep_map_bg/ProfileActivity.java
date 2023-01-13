@@ -40,8 +40,11 @@ public class ProfileActivity extends AppCompatActivity {
             Uri googlePicture = account.getPhotoUrl();
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
+            //In case no google pic we will have a default pic
+            if(googlePicture != null){
+                Picasso.get().load(googlePicture).into(profilePic);
+            }
 
-            Picasso.get().load(googlePicture).into(profilePic);
             name.setText(Name);
             mail.setText(Mail);
         }

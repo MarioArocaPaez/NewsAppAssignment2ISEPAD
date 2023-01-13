@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         logInBut = findViewById(R.id.logInBut);
         exitBut = findViewById(R.id.exitBut);
-        //Sign in will be regular with email
+        //Sign in will be regular with gmail
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
