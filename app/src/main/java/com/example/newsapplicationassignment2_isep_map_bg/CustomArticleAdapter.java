@@ -23,18 +23,18 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-
-public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
+public class CustomArticleAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private Context context;
     private List<Articles> articles;
     private SelectListener listener;
     private GoogleSignInAccount account;
-    private CustomAdapter adapter;
+    private CustomArticleAdapter adapter;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    public CustomAdapter(Context context, List<Articles> articles, SelectListener listener, GoogleSignInAccount account) {
+
+    public CustomArticleAdapter(Context context, List<Articles> articles, SelectListener listener, GoogleSignInAccount account) {
         this.context = context;
         this.articles = articles;
         this.listener = listener;

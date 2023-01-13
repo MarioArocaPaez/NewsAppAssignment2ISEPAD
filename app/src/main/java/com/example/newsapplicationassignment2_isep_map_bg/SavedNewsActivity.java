@@ -40,7 +40,7 @@ import java.util.Objects;
 
 public class SavedNewsActivity extends AppCompatActivity implements SelectListener{
     RecyclerView recyclerView;
-    CustomAdapter adapter;
+    CustomArticleAdapter adapter;
 
     GoogleSignInAccount account;
 
@@ -153,7 +153,7 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
             recyclerView = findViewById(R.id.recyclerViewMain);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-            adapter = new CustomAdapter(this, ls, this, account);
+            adapter = new CustomArticleAdapter(this, ls, this, account);
             recyclerView.setAdapter(adapter);
         }
     }

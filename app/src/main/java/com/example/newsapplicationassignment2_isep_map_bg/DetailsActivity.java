@@ -65,6 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
         bDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //If this button is clicked open browser and go to URL
                 Intent webPage = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl()));
                 startActivity(webPage);
             }
@@ -74,6 +75,7 @@ public class DetailsActivity extends AppCompatActivity {
         bShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Share options
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 String shareBody = article.getUrl();
@@ -91,12 +93,11 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewsActivity.class);
         startActivity(intent);
     }
-
+    //back button in bar
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
-                return true;
+                onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
