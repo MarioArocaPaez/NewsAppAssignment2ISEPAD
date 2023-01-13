@@ -13,6 +13,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     TextView textSource;
     ImageView img;
     CardView cardView;
+    ImageView saveButton;
 
     public CustomViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -21,5 +22,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         textSource = itemView.findViewById(R.id.source);
         img = itemView.findViewById(R.id.image);
         cardView = itemView.findViewById(R.id.mainContainer);
+        saveButton = itemView.findViewById(R.id.saveButton);
     }
 }
