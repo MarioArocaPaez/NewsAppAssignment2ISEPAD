@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +26,16 @@ import com.example.newsapplicationassignment2_isep_map_bg.Models.Articles;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements SelectListener, View.OnClickListener{
@@ -48,6 +57,10 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     TextView googName;
     TextView gMail;
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(AbToggle.onOptionsItemSelected(item)){
@@ -61,9 +74,12 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
+        // Dialog while news articles are loading
         dialog = new ProgressDialog(this);
         dialog.setTitle("Searching for news articles...");
         dialog.show();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         bBusiness = findViewById(R.id.btnBusiness);
         bBusiness.setOnClickListener(this);
@@ -97,8 +113,39 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
             }
         });
 
+        // Retrieving all the news from the API to show on the general feed
         RequestManager manager = new RequestManager(this);
         manager.getArticles(listener, "general", null);
+
+        // Setting the reference for the FireBase realtime database, and retrieving the saved
+        // articles, to later on display them on the SavedNewsActivity.
+        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
+
+        final List<Articles> ls = new ArrayList<Articles>();
+        final List<String> titlesList = new ArrayList<>();
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+
+                for (DataSnapshot child : children) {
+                    Articles article = child.getValue(Articles.class);
+                    if (!titlesList.contains(article.getTitle())) {
+                        ls.add(article);
+                        titlesList.add(article.getTitle());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.sidebar);
@@ -106,10 +153,18 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         drawerLayout.addDrawerListener(AbToggle);
         AbToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Setting the behavior for the selection different items of the sidebar
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.nav_news:
+                    {
+                        //startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    }
                     case R.id.nav_profile:
                     {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
@@ -118,6 +173,12 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                     case R.id.nav_country:
                     {
                         startActivity(new Intent(getApplicationContext(), CountryActivity.class));
+                        break;
+                    }
+                    case R.id.nav_saved:
+                    {
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        startActivity(new Intent(getApplicationContext(), SavedNewsActivity.class).putExtra("LIST", (Serializable) ls));
                         break;
                     }
                 }
@@ -129,14 +190,15 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         googName = navigationView.getHeaderView(0).findViewById(R.id.google_name);
         gMail = navigationView.getHeaderView(0).findViewById(R.id.google_gmail);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account != null){
             Uri googlePicture = account.getPhotoUrl();
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
 
-            Picasso.get().load(googlePicture).into(profilePicture);
+            if (googlePicture != null) {
+                Picasso.get().load(googlePicture).into(profilePicture);
+            }
             googName.setText(Name);
             gMail.setText(Mail);
         }
@@ -144,6 +206,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
 
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -173,10 +236,13 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     };
 
     private void showNews(List<Articles> ls) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        adapter = new CustomArticleAdapter(this, ls, this);
+
+        adapter = new CustomArticleAdapter(this, ls, this, account);
+
         recyclerView.setAdapter(adapter);
     }
 

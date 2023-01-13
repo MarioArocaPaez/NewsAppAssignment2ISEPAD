@@ -1,6 +1,7 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;

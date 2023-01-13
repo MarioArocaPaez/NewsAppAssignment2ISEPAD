@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsApplicationAssignment2_ISEP_MAP_BG</string>
+    <string name="app_name">NewsApp</string>
     <string name="api_key">22c71aa09f07403a8f813c0353b9dbf3</string>
     <string name="open">Open Navigation Drawer</string>
     <string name="close">Close Navigation Drawer</string>
