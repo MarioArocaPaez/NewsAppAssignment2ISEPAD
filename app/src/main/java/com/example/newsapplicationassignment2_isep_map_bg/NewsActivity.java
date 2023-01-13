@@ -123,7 +123,29 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         // articles, to later on display them on the SavedNewsActivity.
         firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
-        List<Articles> ls = getSavedData(databaseReference);
+
+        final List<Articles> ls = new ArrayList<Articles>();
+        final List<String> titlesList = new ArrayList<>();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+
+                for (DataSnapshot child : children) {
+                    Articles article = child.getValue(Articles.class);
+                    if (!titlesList.contains(article.getTitle())) {
+                        ls.add(article);
+                        titlesList.add(article.getTitle());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.sidebar);
@@ -187,23 +209,14 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         ValueEventListener leListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    //Toast.makeText(getApplicationContext(),"Data Not Available",Toast.LENGTH_LONG).show();
-                    Log.d("dataSnapshot", "Null");
-                } else {
-                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                        Log.i("TOTO", messageSnapshot.getKey() + " " + messageSnapshot.getValue());
-                        Gson gson = new Gson();
-                        String json = gson.toJson(messageSnapshot.getValue());
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(messageSnapshot.getValue());
 
-                        Log.d("Contenido del json: ", json);
+                    Gson g = new Gson();
+                    Articles article = g.fromJson(json, Articles.class);
 
-                        Gson g = new Gson();
-                        Articles article = g.fromJson(json, Articles.class);
-
-                        ls.add(article);
-                        Log.d("LS dice:", " aa " + ls.size());
-                    }
+                    ls.add(article);
                 }
             }
 
@@ -212,7 +225,6 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
             }
         };
         databaseReference.addListenerForSingleValueEvent(leListener);
-        Log.d("LS dice:", " bb " + ls.size());
         return ls;
 
     }

@@ -32,7 +32,8 @@ import java.util.Objects;
 public class SavedNewsActivity extends AppCompatActivity implements SelectListener{
     RecyclerView recyclerView;
     CustomAdapter adapter;
-    ProgressDialog dialog;
+
+    GoogleSignInAccount account;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -44,84 +45,29 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_news);
-        //TODO: Add something better than ProgressDialog
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Searching for your saved articles...");
-        dialog.show();
 
         Intent i = getIntent();
         ls = (List<Articles>) i.getSerializableExtra("LIST");
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
 
-        // List<Articles> ls = getSavedData(databaseReference);
-        //listener.onFetchData(ls, "");
 
         showNews(ls);
-        dialog.dismiss();
 
     }
-
-    public List<Articles> getSavedData(DatabaseReference databaseReference) {
-        List<Articles> ls = new ArrayList<Articles>();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    //Toast.makeText(getApplicationContext(),"Data Not Available",Toast.LENGTH_LONG).show();
-                    Log.d("dataSnapshot", "Vacío");
-                } else {
-                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                        Gson gson = new Gson();
-                        String json = gson.toJson(messageSnapshot.getValue());
-
-                        Gson g = new Gson();
-                        Articles article = g.fromJson(json, Articles.class);
-
-                        ls.add(article);
-                        Log.d("Art en savednewsact:", ls.get(0).getTitle());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        return ls;
-
-    }
-
-    private final OnFetchDataListener<ApiResponse> listener = new OnFetchDataListener<ApiResponse>() {
-        @Override
-        public void onFetchData(List<Articles> ls, String message) {
-
-
-            if(ls.isEmpty()){
-                Toast.makeText(SavedNewsActivity.this, "No results ", Toast.LENGTH_SHORT).show();
-            }else{
-                showNews(ls);
-                dialog.dismiss();
-            }
-
-        }
-
-        @Override
-        public void onError(String message) {
-            Toast.makeText(SavedNewsActivity.this, "Error occurred :(", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     private void showNews(List<Articles> ls) {
+
         if(ls.isEmpty()){
-            Toast.makeText(SavedNewsActivity.this, "No saved articles yet", Toast.LENGTH_SHORT).show();
+            TextView msg = findViewById(R.id.msgTextView);
+            msg.setText("No saved articles yet\n:(");
+            //Toast.makeText(SavedNewsActivity.this, "No saved articles yet", Toast.LENGTH_SHORT).show();
         }else {
+            TextView msg = findViewById(R.id.msgTextView);
+            msg.setText("");
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             recyclerView = findViewById(R.id.recyclerViewMain);
             recyclerView.setHasFixedSize(true);

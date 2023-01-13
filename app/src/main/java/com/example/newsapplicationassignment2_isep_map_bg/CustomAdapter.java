@@ -1,6 +1,7 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private List<Articles> articles;
     private SelectListener listener;
     private GoogleSignInAccount account;
+    private CustomAdapter adapter;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -37,6 +39,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         this.articles = articles;
         this.listener = listener;
         this.account = account;
+        this.adapter = this;
     }
 
     @NonNull
@@ -85,6 +88,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             }
         });
 
+        /*
+        NewsActivity na = new NewsActivity();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
+        na.getSavedData(databaseReference);
+        */
 
         holder.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,50 +103,22 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
                     holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_border_24);
                     holder.saveButton.setTag("unsaved");
+                    //databaseReference.child(articles.get(position).getPublishedAt()).setValue(null);
                     databaseReference.child(articles.get(position).getPublishedAt()).removeValue();
                     Toast.makeText(context, "Saved article deleted!", Toast.LENGTH_LONG).show();
-                    //deleteDataFromFirebase(articles.get(position));
+
                 } else {
                     holder.saveButton.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
                     holder.saveButton.setTag("saved");
                     databaseReference.child(articles.get(position).getPublishedAt()).setValue(articles.get(position));
                     Toast.makeText(context, "Article saved!", Toast.LENGTH_LONG).show();
-                    //addDatatoFirebase(articles.get(position));
+
                 }
-            }
+                //Intent i = new Intent(context, NewsActivity.class);
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //add this line
+                //context.startActivity(i);
 
-            private void deleteDataFromFirebase(Articles article) {
-                // below lines are used to get reference for our database.
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        snapshot.getRef().child(article.getPublishedAt()).removeValue();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-            private void addDatatoFirebase(Articles article) {
-
-                // below lines are used to get reference for our database.
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        snapshot.getRef().child(article.getPublishedAt()).setValue(article);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
+                }
         });
     }
 
