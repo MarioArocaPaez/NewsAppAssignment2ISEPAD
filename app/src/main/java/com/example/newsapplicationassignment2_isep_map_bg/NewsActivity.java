@@ -126,6 +126,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
 
         final List<Articles> ls = new ArrayList<Articles>();
         final List<String> titlesList = new ArrayList<>();
+
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -161,7 +163,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                 switch (item.getItemId()){
                     case R.id.nav_news:
                     {
-                        startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                        //startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                        drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     }
                     case R.id.nav_profile:
@@ -176,6 +179,7 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
                     }
                     case R.id.nav_saved:
                     {
+                        drawerLayout.closeDrawer(GravityCompat.START);
                         startActivity(new Intent(getApplicationContext(), SavedNewsActivity.class).putExtra("LIST", (Serializable) ls));
                         break;
                     }
@@ -194,7 +198,9 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
 
-            Picasso.get().load(googlePicture).into(profilePicture);
+            if (googlePicture != null) {
+                Picasso.get().load(googlePicture).into(profilePicture);
+            }
             googName.setText(Name);
             gMail.setText(Mail);
         }
@@ -203,31 +209,6 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
 
     }
 
-    public List<Articles> getSavedData(DatabaseReference databaseReference) {
-        List<Articles> ls = new ArrayList<Articles>();
-
-        ValueEventListener leListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    Gson gson = new Gson();
-                    String json = gson.toJson(messageSnapshot.getValue());
-
-                    Gson g = new Gson();
-                    Articles article = g.fromJson(json, Articles.class);
-
-                    ls.add(article);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(leListener);
-        return ls;
-
-    }
 
     @Override
     public void onBackPressed() {
