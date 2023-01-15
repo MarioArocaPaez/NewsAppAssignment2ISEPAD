@@ -60,6 +60,8 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
+    public static boolean first = true;
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -74,136 +76,139 @@ public class NewsActivity extends AppCompatActivity implements SelectListener, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        // Dialog while news articles are loading
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Searching for news articles...");
-        dialog.show();
+        if (first == true) {
+            first = false;
+            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+        } else {
+            // Dialog while news articles are loading
+            dialog = new ProgressDialog(this);
+            dialog.setTitle("Searching for news articles...");
+            dialog.show();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        bBusiness = findViewById(R.id.btnBusiness);
-        bBusiness.setOnClickListener(this);
-        bEntertainment = findViewById(R.id.btnEntertainment);
-        bEntertainment.setOnClickListener(this);
-        bGeneral = findViewById(R.id.btnGeneral);
-        bGeneral.setOnClickListener(this);
-        bHealth = findViewById(R.id.btnHealth);
-        bHealth.setOnClickListener(this);
-        bScience = findViewById(R.id.btnScience);
-        bScience.setOnClickListener(this);
-        bSports = findViewById(R.id.btnSports);
-        bSports.setOnClickListener(this);
-        bTechnology = findViewById(R.id.btnTechnology);
-        bTechnology.setOnClickListener(this);
+            bBusiness = findViewById(R.id.btnBusiness);
+            bBusiness.setOnClickListener(this);
+            bEntertainment = findViewById(R.id.btnEntertainment);
+            bEntertainment.setOnClickListener(this);
+            bGeneral = findViewById(R.id.btnGeneral);
+            bGeneral.setOnClickListener(this);
+            bHealth = findViewById(R.id.btnHealth);
+            bHealth.setOnClickListener(this);
+            bScience = findViewById(R.id.btnScience);
+            bScience.setOnClickListener(this);
+            bSports = findViewById(R.id.btnSports);
+            bSports.setOnClickListener(this);
+            bTechnology = findViewById(R.id.btnTechnology);
+            bTechnology.setOnClickListener(this);
 
-        searchView = findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                dialog.setTitle("Searching for News of " + query);
-                dialog.show();
-                RequestManager manager = new RequestManager(NewsActivity.this);
-                manager.getArticles(listener, "general", query);
-                return true;
-            }
+            // Setting the reference for the FireBase realtime database, and retrieving the saved
+            // articles, to later on display them on the SavedNewsActivity.
+            firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+            databaseReference = firebaseDatabase.getReference(account.getId());
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+            List<Articles> ls = new ArrayList<Articles>();
+            List<String> titlesList = new ArrayList<>();
 
-        // Retrieving all the news from the API to show on the general feed
-        RequestManager manager = new RequestManager(this);
-        manager.getArticles(listener, "general", null);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String country = snapshot.child("country").getValue(String.class);
 
-        // Setting the reference for the FireBase realtime database, and retrieving the saved
-        // articles, to later on display them on the SavedNewsActivity.
-        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
-        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
+                    Iterable<DataSnapshot> children = snapshot.child("saved").getChildren();
 
-        final List<Articles> ls = new ArrayList<Articles>();
-        final List<String> titlesList = new ArrayList<>();
-
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                for (DataSnapshot child : children) {
-                    Articles article = child.getValue(Articles.class);
-                    if (!titlesList.contains(article.getTitle())) {
-                        ls.add(article);
-                        titlesList.add(article.getTitle());
+                    for (DataSnapshot child : children) {
+                        Articles article = child.getValue(Articles.class);
+                        if (!titlesList.contains(article.getTitle())) {
+                            ls.add(article);
+                            titlesList.add(article.getTitle());
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.sidebar);
-        AbToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(AbToggle);
-        AbToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // Setting the behavior for the selection different items of the sidebar
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_news:
-                    {
-                        //startActivity(new Intent(getApplicationContext(), NewsActivity.class));
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    }
-                    case R.id.nav_profile:
-                    {
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        break;
-                    }
-                    case R.id.nav_country:
-                    {
-                        startActivity(new Intent(getApplicationContext(), CountryActivity.class));
-                        break;
-                    }
-                    case R.id.nav_saved:
-                    {
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        startActivity(new Intent(getApplicationContext(), SavedNewsActivity.class).putExtra("LIST", (Serializable) ls));
-                        break;
-                    }
                 }
-                return NewsActivity.super.onOptionsItemSelected(item);
+            });
+
+            searchView = findViewById(R.id.searchView);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    dialog.setTitle("Searching for News of " + query);
+                    dialog.show();
+                    RequestManager manager = new RequestManager(NewsActivity.this);
+                    manager.getArticles(listener, "general", query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+
+
+            // Retrieving all the news from the API to show on the general feed
+            RequestManager manager = new RequestManager(this);
+            manager.getArticles(listener, "general", null);
+
+            drawerLayout = findViewById(R.id.drawer_layout);
+            navigationView = findViewById(R.id.sidebar);
+            AbToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+            drawerLayout.addDrawerListener(AbToggle);
+            AbToggle.syncState();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            // Setting the behavior for the selection different items of the sidebar
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.nav_news: {
+                            //startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                            break;
+                        }
+                        case R.id.nav_profile: {
+                            ProfileActivity.first = false;
+                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            break;
+                        }
+                        case R.id.nav_country: {
+                            startActivity(new Intent(getApplicationContext(), CountryActivity.class));
+                            break;
+                        }
+                        case R.id.nav_saved: {
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                            startActivity(new Intent(getApplicationContext(), NewsActivity.class));
+                            startActivity(new Intent(getApplicationContext(), SavedNewsActivity.class).putExtra("LIST", (Serializable) ls));
+                            break;
+                        }
+                    }
+                    return NewsActivity.super.onOptionsItemSelected(item);
+                }
+            });
+
+            profilePicture = navigationView.getHeaderView(0).findViewById(R.id.profile_picture);
+            googName = navigationView.getHeaderView(0).findViewById(R.id.google_name);
+            gMail = navigationView.getHeaderView(0).findViewById(R.id.google_gmail);
+
+
+            if (account != null) {
+                Uri googlePicture = account.getPhotoUrl();
+                String Name = account.getDisplayName();
+                String Mail = account.getEmail();
+
+                if (googlePicture != null) {
+                    Picasso.get().load(googlePicture).into(profilePicture);
+                }
+                googName.setText(Name);
+                gMail.setText(Mail);
             }
-        });
 
-        profilePicture = navigationView.getHeaderView(0).findViewById(R.id.profile_picture);
-        googName = navigationView.getHeaderView(0).findViewById(R.id.google_name);
-        gMail = navigationView.getHeaderView(0).findViewById(R.id.google_gmail);
-
-
-        if(account != null){
-            Uri googlePicture = account.getPhotoUrl();
-            String Name = account.getDisplayName();
-            String Mail = account.getEmail();
-
-            if (googlePicture != null) {
-                Picasso.get().load(googlePicture).into(profilePicture);
-            }
-            googName.setText(Name);
-            gMail.setText(Mail);
         }
-
-
 
     }
 
