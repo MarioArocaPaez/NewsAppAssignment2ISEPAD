@@ -1,6 +1,6 @@
 # Final Project for II.3510 Mobile Application Development for Android | ISEP 2022/2023
 
-##Project Description
+## Project Description
 
 **Project Name:** News App
 
