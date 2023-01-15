@@ -56,6 +56,14 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
     TextView googName;
     TextView gMail;
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(AbToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +132,9 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
 
-            Picasso.get().load(googlePicture).into(profilePicture);
+            if (googlePicture != null) {
+                Picasso.get().load(googlePicture).into(profilePicture);
+            };
             googName.setText(Name);
             gMail.setText(Mail);
         }
@@ -164,6 +174,5 @@ public class SavedNewsActivity extends AppCompatActivity implements SelectListen
         Intent intent = new Intent(getApplicationContext(), DetailsActivity.class).putExtra("data", articles);
         startActivity(intent);
     }
-
 
 }
