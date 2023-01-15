@@ -88,13 +88,6 @@ public class CustomArticleAdapter extends RecyclerView.Adapter<CustomViewHolder>
             }
         });
 
-        /*
-        NewsActivity na = new NewsActivity();
-        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
-        databaseReference = firebaseDatabase.getReference(account.getId()).child("saved");
-        na.getSavedData(databaseReference);
-        */
-
         holder.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
