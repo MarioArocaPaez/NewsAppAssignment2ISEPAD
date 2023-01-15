@@ -1,6 +1,7 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,22 +52,17 @@ public class ProfileActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.imageView);
         logout = findViewById(R.id.logOutBut);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference(account.getId());
 
-        //CountryActivity.country = getCountry();
-
-        //readData(databaseReference.child("country"), new OnGetDataListener() {
-        //    @Override
-        //    public void onSuccess(String country) {
-
-        //        CountryActivity.country = country;
-        //        Log.d("country (ProfileActivity)", country);
-
-        //    }
-        //});
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,5 +133,20 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, NewsActivity.class);
+        startActivity(intent);
+    }
+    //back button in bar
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

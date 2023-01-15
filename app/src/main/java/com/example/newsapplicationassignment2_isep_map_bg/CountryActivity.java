@@ -1,9 +1,12 @@
 package com.example.newsapplicationassignment2_isep_map_bg;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -59,6 +62,12 @@ public class CountryActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         listView = findViewById(R.id.listView);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         currentCountry = findViewById(R.id.currentCountry);
         //currentCountry is the text we see in the screen with the current country, not to miss with countryLabel
         currentCountry.setText(RequestManager.countryLabel);
@@ -85,6 +94,19 @@ public class CountryActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, NewsActivity.class);
+        startActivity(intent);
+    }
+    //back button in bar
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
