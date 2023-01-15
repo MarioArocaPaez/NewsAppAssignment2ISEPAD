@@ -15,11 +15,10 @@
 
 
     <ImageView
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="#f7f1e3"
+        android:background="#80f7f1e3"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
         android:src="@drawable/news" />
 
     <TextView
@@ -28,7 +27,7 @@
         android:layout_margin="30dp"
         android:gravity="center"
         android:text="Please log in to continue"
-        android:background="#f7f1e3"
+        android:background="#99f7f1e3"
         android:textColor="#000"
         android:textStyle="bold"
         android:textSize="25dp" />
@@ -44,7 +43,9 @@
         android:id="@+id/logInBut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="#227093"
         android:drawablePadding="10dp"
         android:text="Log in with Google"
@@ -57,7 +58,8 @@
         android:id="@+id/exitBut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:backgroundTint="#227093"
         android:drawablePadding="10dp"
         android:text="Exit"
