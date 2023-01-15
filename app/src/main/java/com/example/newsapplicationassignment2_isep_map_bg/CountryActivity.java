@@ -9,6 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +25,11 @@ public class CountryActivity extends AppCompatActivity {
     public static String country;
     public static List<String> countries;
     public static List<String> codes;
+    private GoogleSignInAccount account;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +65,19 @@ public class CountryActivity extends AppCompatActivity {
         CustomCountryAdapter countryAdapter = new CustomCountryAdapter(getApplicationContext(), countries, countryFlags);
         listView.setAdapter(countryAdapter);
 
+        account = GoogleSignIn.getLastSignedInAccount(this);
+
+        firebaseDatabase = FirebaseDatabase.getInstance("https://newsapp-808c0-default-rtdb.europe-west1.firebasedatabase.app");
+        databaseReference = firebaseDatabase.getReference(account.getId());
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //country is the code that will be used the API call
                 country = codes.get(position);
+                databaseReference.child("country_code").setValue(country);
+                databaseReference.child("country_label").setValue(countries.get(position));
                 //countryLabel will be the text in currentCountry next time we enter this activity
                 RequestManager.countryLabel = countries.get(position);
                 startActivity(new Intent(getApplicationContext(), NewsActivity.class));

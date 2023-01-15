@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.newsapplicationassignment2_isep_map_bg.Models.ApiResponse;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,6 +19,9 @@ import retrofit2.http.Query;
 public class RequestManager {
     Context context;
     public static String countryLabel;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
     //library Retrofit used to facilitate API calls
     Retrofit retrofit = new Retrofit.Builder().baseUrl("https://newsapi.org/v2/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -27,6 +32,7 @@ public class RequestManager {
     }
 
     public void getArticles(OnFetchDataListener listener, String category, String query){
+
         CallNewsApi callNewsApi = retrofit.create(CallNewsApi.class);
         Call<ApiResponse> call = callNewsApi.callArticles(CountryActivity.country, category, query, context.getString(R.string.api_key));
 
